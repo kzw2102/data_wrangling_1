@@ -80,4 +80,25 @@ filter(litters_data, gd0_weight+gd18_weight>70)
 drop_na(litters_data)
 ```
 
+## mutate
+
+```{r}
+# added variable name wt_gain which gets added to then end -- last column
+mutate(litters_data, wt_gain = gd18_weight - gd0_weight)
+
+mutate(
+  litters_data,
+  wt_gain=gd18_weight - gd0_weight,
+  group = str_to_lower(group),
+  group = str_to_upper(group)
+)
+```
+
+## Arrange
+```{r}
+arrange(litters_data, pups_born_alive)
+
+arrange(litters_data, desc(pups_born_alive))
+```
+
 
