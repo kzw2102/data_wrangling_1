@@ -1,0 +1,83 @@
+---
+title: "Data Import"
+author: "Kelly Wang"
+date: "9/19/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Import dataset
+
+```{r}
+##reads in a dataset
+litters_data=read_csv(file ="./data/FAS_litters.csv")
+litters_data=janitor::clean_names(litters_data)
+pups_data=read_csv(file="./data/FAS_pups.csv")
+pups_data=janitor::clean_names(litters_data)
+```
+
+R doesn't know what group is. however we can say that we know that inside the litters data set there is a variable group. R only knows about the data frames and what is assigned. There is a difference here that R knows about directly and R knows if we tell them where to look, which is inside the data from
+
+## Selecting!! 
+```{r}
+select(litters_data,group,litter_number, gd0_weight, starts_with("pups"))
+
+select(litters_data, litter_number, group, gd0_weight)
+
+#if you just want everything but one variable. the minus sign indicates subtracting the variable
+select(litters_data, -group)
+
+#to rearrange
+select(litters_data, gd18_weight, everything())
+
+#keep every column between gd0_weight and pups_born_alive
+select(litters_data, litter_number, gd0_weight:pups_born_alive)
+
+#how to rename variable names
+select(litters_data, GROUP = group, litter_number)
+```
+first thing is data and then after that are the columns you want 
+note that starts_with is a helper function. it allows us to chose a key word that starts with pups 
+
+note the select does put variables in order
+
+starts_with(), ends_with() and contains()
+
+## Filtering
+```{r}
+filter(litters_data, group == "Mod8")
+## == when this is true, keep this row
+
+filter(litters_data, gd_of_birth == 20)
+
+filter(litters_data, gd_of_birth < 20)
+
+filter(litters_data, gd_of_birth >= 20)
+
+filter(litters_data, pups_born_alive < 6)
+
+#either in this group or other
+filter(litters_data,group %in% c("Con7", "Con8"))
+
+#!(pups_survive == 4) means not 
+
+#multiple conditions
+
+filter(litters_data, pups_born_alive >= 4, pups_born_alive <=6)
+
+#a+b>7
+filter(litters_data, gd0_weight+gd18_weight>70)
+
+#what if there are missing values?
+# don't do this filter(litters_data, !is.na(gd0_weight))
+
+#recommends this:
+drop_na(litters_data)
+```
+
+
