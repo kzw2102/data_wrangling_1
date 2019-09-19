@@ -1,6 +1,6 @@
 ---
 title: "Data Import"
-Author: "Kelly Wang"
+author: "Kelly Wang"
 date: "9/17/2019"
 output: github_document
 ---
@@ -15,7 +15,7 @@ library(tidyverse)
 
 ```{r}
 ##reads in a dataset
-litters_data=read.csv(file = "./data/FAS_litters.csv")
+litters_data=read_csv(file ="./data/FAS_litters.csv")
 litters_data=janitor::clean_names(litters_data)
 ```
 
@@ -24,4 +24,42 @@ litters_data=janitor::clean_names(litters_data)
 ```{r}
 pups_data=read_csv(file="./data/FAS_pups.csv")
 pups_data=janitor::clean_names(litters_data)
+```
+##play with column types
+litters_data = read_csv(
+  file = "./data/FAS_litters.csv",
+  col_types = cols(
+    Group = col_character(),
+    `Litter Number` = col_character(),
+    `GD0 weight` = col_double(),
+    `GD18 weight` = col_double(),
+    `GD of Birth` = col_integer(),
+    `Pups born alive` = col_integer(),
+    `Pups dead @ birth` = col_integer(),
+    `Pups survive` = col_integer()
+  )
+)
+tail(litters_data)
+
+##read in an excel file
+```{r}
+library(readxl)
+
+mlb11_data=read_excel(path="./data/mlb11.xlsx")
+#only if you just want a subset of the excel sheet
+mlb11_data_subset=
+  read_excel(
+    path="./data/mlb11.xlsx",
+    range="A1:A77"
+  )
+```
+
+##read in SAS...
+```{r}
+pulse_data=haven::read_sas("./data/public_pulse_data.sas7bdat")
+```
+
+#exporting dataset
+```{r}
+write_csv(mlb11_data_subset, path = "./data/mlb11_subset.csv")
 ```
